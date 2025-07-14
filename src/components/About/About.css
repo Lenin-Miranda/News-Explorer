@@ -1,0 +1,47 @@
+.about {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 56px;
+  padding: 80px;
+  color: #1a1b22;
+}
+
+.about__header-container {
+  text-align: left;
+}
+
+.about__header {
+  font-family: "roboto slab", sans-serif, "Times New Roman", Times, serif;
+  font-weight: 400;
+  font-size: 40px;
+  margin: 0;
+}
+
+.about__image {
+  max-width: 464px;
+  max-height: 464px;
+  height: 100%;
+  width: 100%;
+  border-radius: 50%;
+}
+
+.about__description {
+  font-family: "roboto", sans-serif, "Times New Roman", Times, serif;
+  font-size: 18px;
+  font-weight: 400;
+}
+
+@media (max-width: 620px) {
+  .about {
+    flex-direction: column;
+    padding: 24px;
+  }
+  .about__header {
+    font-size: 30px;
+  }
+  .about__image {
+    max-width: 272px;
+    max-height: 272px;
+  }
+}

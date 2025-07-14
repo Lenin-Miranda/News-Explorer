@@ -1,0 +1,217 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  padding: 13px 104px;
+  align-items: center;
+  border-bottom: 1px #c4c4c4 solid;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  box-sizing: border-box;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+.navbar__title {
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  transition: color 0.3s ease;
+}
+
+.navbar__list {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 42px;
+  list-style-type: none;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.navbar__item {
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.navbar__button {
+  border: 1px #fff solid;
+  background: none;
+  padding: 15px 80px;
+  border-radius: 100px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: all 0.3s ease;
+}
+
+.navbar__button_type_logout {
+  border: 2px #fff solid;
+  padding: 12px 15px;
+}
+
+.navbar__link_active {
+  opacity: 1;
+  position: relative;
+  padding-bottom: 15px;
+  margin-bottom: -15px;
+}
+
+.navbar__link_active::after {
+  content: "";
+  position: absolute;
+  bottom: -14px;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+.navbar__link_inactive {
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+
+.navbar__link_inactive:hover {
+  opacity: 1;
+}
+
+.navbar_invert {
+  background-color: #fff;
+  border-bottom: 1px #d1d2d6 solid;
+}
+
+.navbar_invert .navbar__title {
+  color: #1a1b22;
+}
+
+.navbar_invert .navbar__link {
+  color: #1a1b22;
+}
+
+.navbar_invert .navbar__link_active::after {
+  background-color: #1a1b22;
+}
+
+.navbar_invert .navbar__button {
+  border: 1px #1a1b22 solid;
+  color: #1a1b22;
+}
+
+.navbar_invert .navbar__button-image {
+  color: #1a1b22;
+  transition: color 0.3s ease;
+}
+
+.navbar__button-menu {
+  background: none;
+  display: none;
+  border: none;
+}
+
+@media (max-width: 620px) {
+  .navbar {
+    justify-content: space-between;
+    padding: 16px;
+    z-index: 1000;
+  }
+
+  .navbar__item {
+    display: none;
+  }
+
+  .navbar__button-menu {
+    display: block;
+  }
+
+  /* Modal for the menu on mobile */
+
+  .modal__menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    z-index: 2;
+  }
+
+  .modal__menu-overlay {
+    position: absolute;
+    background-color: rgba(26, 27, 34, 0.5);
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+  }
+
+  .modal__menu-links-container {
+    position: relative;
+    padding: 16px;
+    display: flex;
+    background-color: #1a1b22;
+    height: 100%;
+    max-height: 230px;
+  }
+
+  .modal__menu-links {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 80px 0;
+    gap: 22px;
+    text-align: left;
+    box-sizing: border-box;
+    height: 100%;
+  }
+
+  .modal__menu-link {
+    color: #fff;
+    font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  .modal__menu-link:hover {
+    opacity: 0.8;
+  }
+  .navbar__button {
+    width: 288px;
+    justify-content: center;
+  }
+  .navbar__menu-inactive {
+    display: none;
+  }
+
+  .navbar_invert .navbar__button-menu img {
+    filter: brightness(0);
+  }
+
+  /* Estilos para el menú en Saved Articles (página invertida) */
+  .modal__menu.saved-articles .modal__menu-links-container {
+    background-color: #fff;
+  }
+
+  .modal__menu.saved-articles .modal__menu-link {
+    color: #1a1b22;
+  }
+
+  .modal__menu.saved-articles .modal__menu-link a {
+    color: #1a1b22;
+  }
+
+  .modal__menu.saved-articles .modal__menu-link .navbar__button {
+    border: 1px #1a1b22 solid;
+    color: #1a1b22;
+  }
+}
