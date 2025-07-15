@@ -28,10 +28,11 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
 .news__card-image {
+  height: 100%;
+  max-height: 272px;
   width: 100%;
   border-radius: 12px 12px 0 0;
 }
@@ -88,6 +89,15 @@
 
 .news__card-like-icon:hover {
   opacity: 1 !important;
+}
+
+.news__card-like--disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.news__card-like--disabled .news__card-like-icon:hover {
+  opacity: 0.5 !important;
 }
 
 .news__header {

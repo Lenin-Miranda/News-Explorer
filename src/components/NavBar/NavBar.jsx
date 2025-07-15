@@ -14,6 +14,7 @@ export default function NavBar({
   closeMenu,
   isMenuOpen,
   isModalOpen,
+  userName, // nueva prop
 }) {
   const location = useLocation();
 
@@ -57,21 +58,22 @@ export default function NavBar({
                 className="navbar__button  navbar__button_type_logout"
                 onClick={logOut}
               >
-                UserName
+                {userName}
                 <img
                   className="navbar__button-image"
                   src={isInvert ? logoutB : logoutW}
+                  alt="logout icon"
                 />
               </button>
             </li>
             {!isModalOpen &&
               (isMenuOpen ? (
                 <button className="navbar__button-menu" onClick={closeMenu}>
-                  <img height={24} width={24} src={close} />
+                  <img height={24} width={24} src={close} alt="Cerrar menú" />
                 </button>
               ) : (
                 <button className="navbar__button-menu" onClick={openMenu}>
-                  <img src={isHome ? menu : menuB} />
+                  <img src={isHome ? menu : menuB} alt="Abrir menú" />
                 </button>
               ))}
           </>

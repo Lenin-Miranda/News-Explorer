@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Header from "../Header/Header";
 import About from "../About/About";
 import NewsCard from "../NewsCard/NewsCard";
@@ -8,6 +8,7 @@ import LogIn from "../LogIn/LogIn";
 import { newsData } from "../../data/newsData";
 import SearchForm from "../SearchForm/SearchForm";
 import { Link } from "react-router-dom";
+import { fetchNews } from "../../utils/NewsApi";
 
 export default function Main({
   isModalOpen,
@@ -20,50 +21,60 @@ export default function Main({
   isLoggedIn,
   onSignInClick,
   closeMenu,
+  addArticles,
+  search,
+  setSearch,
+  restult,
+  setResult,
+  hasSearched,
+  setHasSearched,
+  onSuccess,
+  onError,
+  success,
+  setSuccess,
 }) {
   const isSignUp = modalMode === "signup";
-  const [search, setSearch] = useState("");
-  const [restult, setResult] = useState(newsData);
   const [visibleCards, setVisibleCards] = useState(3);
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setIsLoading(true);
-    const filtered = newsData.filter(
-      (item) =>
-        item.headline.toLowerCase().includes(search.toLowerCase()) ||
-        item.description.toLowerCase().includes(search.toLowerCase()) ||
-        item.category.toLowerCase().includes(search.toLowerCase()) ||
-        item.type.toLowerCase().includes(search.toLowerCase())
-    );
-    setTimeout(() => {
-      setIsLoading(false);
-      setResult(filtered);
-      setSearch("");
-    }, 1000);
+    setHasSearched(true);
+    try {
+      const data = await fetchNews(search);
+      const articlesWithKeyword = (data.articles || []).map((article) => ({
+        ...article,
+        keyword: search,
+      }));
+      setResult(articlesWithKeyword);
+      if (addArticles) addArticles(articlesWithKeyword);
+    } catch (error) {
+      setResult([]);
+    }
+    setIsLoading(false);
   };
 
   const handleOnClickCard = () => {
     setVisibleCards(visibleCards + 3);
-    console.log("card clicked");
   };
 
-  const handleEnter = (e) => {
+  const handleEnter = async (e) => {
     if (e.key === "Enter") {
       setIsLoading(true);
-      const filtered = newsData.filter(
-        (item) =>
-          item.headline.toLowerCase().includes(search.toLowerCase()) ||
-          item.description.toLowerCase().includes(search.toLowerCase()) ||
-          item.category.toLowerCase().includes(search.toLowerCase()) ||
-          item.type.toLowerCase().includes(search.toLowerCase())
-      );
-      setTimeout(() => {
-        setIsLoading(false);
-        setResult(filtered);
-        setSearch("");
-      }, 1000);
+      setHasSearched(true);
+      try {
+        const data = await fetchNews(search);
+        const articlesWithKeyword = (data.articles || []).map((article) => ({
+          ...article,
+          keyword: search,
+        }));
+        setResult(articlesWithKeyword);
+        if (addArticles) addArticles(articlesWithKeyword);
+      } catch (error) {
+        setResult([]);
+      }
+      setIsLoading(false);
     }
   };
 
@@ -85,12 +96,30 @@ export default function Main({
       <ModalWithForm
         title={isSignUp ? "Sign Up" : "Sign In"}
         text={isSignUp ? "Sign In" : "Sign Up"}
-        buttonText={isSignUp ? "Sign Up" : "Sign In"}
         isOpen={isModalOpen}
         onClose={onCloseModal}
         onSwitchMode={onSwitchMode}
+        isLoading={isLoading}
+        success={success}
       >
-        {isSignUp ? <SignUp /> : <LogIn />}
+        {isSignUp ? (
+          <SignUp
+            onSuccess={onSuccess}
+            onError={onError}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+            onSwitchMode={onSwitchMode}
+            success={success}
+            setSuccess={setSuccess}
+          />
+        ) : (
+          <LogIn
+            onSuccess={onSuccess}
+            onError={onError}
+            isLoading={isLoading}
+            setIsLoading={setIsLoading}
+          />
+        )}
       </ModalWithForm>
       {isMenuOpen && (
         <div
@@ -131,15 +160,19 @@ export default function Main({
           </div>
         </div>
       )}
-      <NewsCard
-        items={restult}
-        visibleCards={visibleCards}
-        onClick={handleOnClickCard}
-        setVisibleCards={setVisibleCards}
-        isLoading={isLoading}
-        toggledIds={toggledIds}
-        onToggle={onToggle}
-      />
+      {hasSearched && (
+        <NewsCard
+          items={restult}
+          visibleCards={visibleCards}
+          onClick={handleOnClickCard}
+          setVisibleCards={setVisibleCards}
+          isLoading={isLoading}
+          toggledIds={toggledIds}
+          onToggle={onToggle}
+          hasSearched={hasSearched}
+          isLoggedIn={isLoggedIn}
+        />
+      )}
 
       <About />
     </>

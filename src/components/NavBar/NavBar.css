@@ -1,7 +1,7 @@
 .navbar {
   display: flex;
   justify-content: space-between;
-  padding: 13px 104px;
+  padding: 13px 70px;
   align-items: center;
   border-bottom: 1px #c4c4c4 solid;
   background-color: transparent;
@@ -25,7 +25,7 @@
   display: flex;
   justify-content: center;
   flex-direction: row;
-  gap: 42px;
+  gap: 20px;
   list-style-type: none;
   align-items: center;
   margin: 0;

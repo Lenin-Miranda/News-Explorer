@@ -3,7 +3,7 @@ import avatar from "../../assets/avatar.jpg";
 export default function About() {
   return (
     <div className="about">
-      <img className="about__image" src={avatar} />
+      <img className="about__image" src={avatar} alt="Foto del autor" />
       <div className="about__header-container">
         <h2 className="about__header">About the author</h2>
         <p className="about__description">

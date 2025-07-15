@@ -17,12 +17,20 @@ export default function NewsCard({
   isLoading,
   toggledIds,
   onToggle,
+  hasSearched = true,
+  isLoggedIn,
 }) {
   const [show, setShow] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
   const location = useLocation();
   const isHome = location.pathname === "/";
   const isSavedArticles = location.pathname === "/saved-articles";
+
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const options = { year: "numeric", month: "long", day: "numeric" };
+    return date.toLocaleDateString("en-US", options);
+  }
 
   useEffect(() => {
     if (isSavedArticles) {
@@ -44,53 +52,78 @@ export default function NewsCard({
           <span className="news__text">Search Results</span>
         </div>
       )}
-      {isLoading === true ? (
+      {isLoading ? (
         <PreLoader />
       ) : (
         <ul className={`news__container `}>
           {items.slice(0, visibleCards).map((item) => {
             return (
-              <li key={item.id} className="news__card">
+              <li key={item.url} className="news__card">
                 <img
                   className="news__card-image"
-                  src={item.image}
-                  alt={item.headline}
+                  src={item.urlToImage}
+                  alt={item.title}
                 />
-                <button
-                  className="news__card-like"
-                  onClick={() => onToggle(item.id)}
+                <div
                   onMouseEnter={() => {
-                    setHoveredId(item.id);
+                    setHoveredId(item.url);
                   }}
                   onMouseLeave={() => {
                     setHoveredId(null);
                   }}
-                  type="button"
                 >
-                  {isHome ? (
-                    <img
-                      className="news__card-like-icon"
-                      style={{
-                        opacity: !toggledIds.includes(item.id) ? "" : "1",
-                      }}
-                      src={
-                        !toggledIds.includes(item.id) ? favorite : favoriteClick
-                      }
-                    />
-                  ) : (
-                    <img className="news__card-like-icon " src={trashB} />
-                  )}
-                </button>
+                  <button
+                    className={`news__card-like ${
+                      isHome && !isLoggedIn ? "news__card-like--disabled" : ""
+                    }`}
+                    onClick={() =>
+                      isHome
+                        ? isLoggedIn && onToggle(item.url)
+                        : onToggle(item.url)
+                    }
+                    disabled={isHome && !isLoggedIn}
+                    type="button"
+                  >
+                    {isHome ? (
+                      <img
+                        className="news__card-like-icon"
+                        style={{
+                          opacity: !toggledIds.includes(item.url) ? "" : "1",
+                        }}
+                        src={
+                          !toggledIds.includes(item.url)
+                            ? favorite
+                            : favoriteClick
+                        }
+                        alt={
+                          !toggledIds.includes(item.url)
+                            ? "Icono favorito vacío"
+                            : "Icono favorito activo"
+                        }
+                      />
+                    ) : (
+                      <img
+                        className="news__card-like-icon "
+                        src={trashB}
+                        alt="Icono de eliminar"
+                      />
+                    )}
+                  </button>
+                </div>
                 <div className="news__card-info-container">
-                  <p className="news__card-date">{item.date}</p>
-                  <p className="news__card-header">{item.headline}</p>
+                  <p className="news__card-date">
+                    {formatDate(item.publishedAt)}
+                  </p>
+                  <p className="news__card-header">{item.title}</p>
                   <p className="news__card-description">{item.description}</p>
-                  <p className="news__card-company">{item.company}</p>
+                  <p className="news__card-company">
+                    {item.source?.name.toUpperCase()}
+                  </p>
                 </div>
                 {!isHome ? (
                   <div
                     className={`news__card-trash-container ${
-                      hoveredId === item.id ? "show" : ""
+                      hoveredId === item.url ? "show" : ""
                     }`}
                   >
                     <span>Remove from saved</span>
@@ -98,9 +131,18 @@ export default function NewsCard({
                 ) : (
                   ""
                 )}
+                {isHome && !isLoggedIn && (
+                  <div
+                    className={`news__card-trash-container ${
+                      hoveredId === item.url ? "show" : ""
+                    }`}
+                  >
+                    <span>Sign in to save articles</span>
+                  </div>
+                )}
                 {!isHome ? (
                   <div className="news__card-keyword-container">
-                    <span>{item.category}</span>
+                    <span>{item.keyword}</span>
                   </div>
                 ) : (
                   ""
@@ -117,9 +159,17 @@ export default function NewsCard({
         </button>
       )}
 
-      {items.length === 0 && (
+      {items.length === 0 && hasSearched && !isLoading && (
         <div className="news__empty-container">
-          <span>{<img src={notFound} className="news__empty-image" />}</span>
+          <span>
+            {
+              <img
+                src={notFound}
+                className="news__empty-image"
+                alt="No se encontraron resultados"
+              />
+            }
+          </span>
           <p className="news__empty-header">Nothing found</p>
           <p className="news__empty">
             {isHome
