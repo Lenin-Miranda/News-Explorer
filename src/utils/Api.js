@@ -1,5 +1,5 @@
 // Simulación de API de base de datos - reemplazar con llamadas reales cuando tengas backend
-
+import avatar from "../assets/header.jpg";
 // Datos simulados de artículos guardados
 let savedArticles = [
   {
@@ -8,7 +8,7 @@ let savedArticles = [
     title: "Artículo de ejemplo guardado",
     description:
       "Este es un artículo de ejemplo que fue guardado por el usuario",
-    urlToImage: "https://via.placeholder.com/400x200",
+    urlToImage: avatar,
     publishedAt: "2024-01-15T10:30:00Z",
     source: { name: "Example News" },
     keyword: "tecnología",
@@ -19,7 +19,7 @@ let savedArticles = [
     url: "https://example.com/article2",
     title: "Otro artículo interesante",
     description: "Segundo artículo guardado para demostración",
-    urlToImage: "https://via.placeholder.com/400x200",
+    urlToImage: avatar,
     publishedAt: "2024-01-14T15:45:00Z",
     source: { name: "Tech Daily" },
     keyword: "ciencia",

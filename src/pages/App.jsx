@@ -12,6 +12,7 @@ import SignUp from "../components/SignUp/SignUp";
 import LogIn from "../components/LogIn/LogIn";
 import { fetchNews } from "../utils/NewsApi";
 import { checkToken, logout } from "../utils/auth";
+import { getSavedArticles, saveArticle, deleteArticle } from "../utils/Api";
 
 function App() {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,6 +25,7 @@ function App() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [news, setNews] = useState([]);
   const [allArticles, setAllArticles] = useState([]);
+  const [savedArticles, setSavedArticles] = useState([]);
   const [success, setSuccess] = useState(false);
 
   const [search, setSearch] = useState("");
@@ -59,6 +61,38 @@ function App() {
         });
     }
   }, []);
+
+  useEffect(() => {
+    if (isLoggedIn && currentUser?._id) {
+      getSavedArticles(currentUser._id)
+        .then(setSavedArticles)
+        .catch(() => setSavedArticles([]));
+    } else {
+      setSavedArticles([]);
+    }
+  }, [isLoggedIn, currentUser]);
+
+  //saved article
+  const handleSaveArticle = async (article) => {
+    if (!currentUser?._id) return;
+    try {
+      const saved = await saveArticle(article, currentUser._id);
+      setSavedArticles((prev) => [...prev, saved]);
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
+
+  //Delete article
+  const handleDeleteArticle = async (articleId) => {
+    if (!currentUser?._id) return;
+    try {
+      await deleteArticle(articleId, currentUser._id);
+      setSavedArticles((prev) => prev.filter((a) => a._id !== articleId));
+    } catch (err) {
+      console.log(err.message);
+    }
+  };
 
   // Función para agregar artículos nuevos a allArticles sin duplicados
   const addArticles = (articles) => {
@@ -109,10 +143,23 @@ function App() {
     });
   };
 
-  const handleToggle = (id) => {
-    setToggledIds((prev) =>
-      prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]
-    );
+  const handleToggle = (url) => {
+    if (!isLoggedIn) return;
+    // Buscar el artículo en la lista de noticias o en allArticles
+    const article =
+      allArticles.find((a) => a.url === url) || news.find((a) => a.url === url);
+    if (!article) return;
+
+    if (toggledIds.includes(url)) {
+      // Eliminar de favoritos usando la API simulada
+      const saved = savedArticles.find((a) => a.url === url);
+      if (saved) handleDeleteArticle(saved._id);
+      setToggledIds((prev) => prev.filter((itemId) => itemId !== url));
+    } else {
+      // Guardar en favoritos usando la API simulada
+      handleSaveArticle(article);
+      setToggledIds((prev) => [...prev, url]);
+    }
   };
 
   const handleShowMore = () => {
@@ -131,11 +178,13 @@ function App() {
   };
 
   // Cambia el filtro para usar allArticles
-  const savedArticles = allArticles.filter((item) =>
+  const savedArticlesList = allArticles.filter((item) =>
     toggledIds.includes(item.url)
   );
   const savedKeywords = [
-    ...new Set(savedArticles.map((article) => article.keyword).filter(Boolean)),
+    ...new Set(
+      savedArticlesList.map((article) => article.keyword).filter(Boolean)
+    ),
   ];
 
   //
@@ -222,6 +271,9 @@ function App() {
                       isLoading={false}
                       toggledIds={toggledIds}
                       onToggle={handleToggle}
+                      isLoggedIn={isLoggedIn}
+                      onDeleteArticle={handleDeleteArticle}
+                      savedArticles={saveArticle}
                     />
 
                     {isMenuOpen && (

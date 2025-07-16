@@ -19,6 +19,8 @@ export default function NewsCard({
   onToggle,
   hasSearched = true,
   isLoggedIn,
+  onSavedArticle,
+  onDeleteArticle,
 }) {
   const [show, setShow] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
