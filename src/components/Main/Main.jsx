@@ -5,7 +5,6 @@ import NewsCard from "../NewsCard/NewsCard";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import SignUp from "../SignUp/SignUp";
 import LogIn from "../LogIn/LogIn";
-import { newsData } from "../../data/newsData";
 import SearchForm from "../SearchForm/SearchForm";
 import { Link } from "react-router-dom";
 import { fetchNews } from "../../utils/NewsApi";
