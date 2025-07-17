@@ -1,5 +1,5 @@
 import { checkResponse } from "./Api";
-const apiKey = import.meta.env.VITE_NEWS_API_KEY; // Asegúrate de que tu .env tenga este nombre
+const apiKey = "494e42497aaa4cd8ba25c47c7bdcb23f";
 const API_URL = "https://newsapi.org/v2/everything";
 
 export const fetchNews = async (query = "bitcoin") => {
