@@ -14,12 +14,17 @@ export default function Footer() {
             Home
           </Link>
 
-          <Link className="footer__link" style={{ fontWeight: "400" }}>
+          <Link
+            className="footer__link"
+            to={"https://tripleten.com/"}
+            style={{ fontWeight: "400" }}
+            target="_blank"
+          >
             Tripleten
           </Link>
         </div>
         <div className="footer__links-container">
-          <a
+          <Link
             href="https://github.com/tu-usuario"
             target="_blank"
             rel="noopener noreferrer"
@@ -27,9 +32,9 @@ export default function Footer() {
             title="GitHub"
           >
             <FaGithub className="footer__icon" />
-          </a>
+          </Link>
 
-          <a
+          <Link
             href="https://linkedin.com/in/tu-perfil"
             target="_blank"
             rel="noopener noreferrer"
@@ -37,7 +42,7 @@ export default function Footer() {
             title="LinkedIn"
           >
             <FaLinkedin className="footer__icon" />
-          </a>
+          </Link>
         </div>
       </div>
     </footer>
