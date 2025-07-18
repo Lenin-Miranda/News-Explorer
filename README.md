@@ -55,12 +55,10 @@ A modern web application for exploring and saving news from different sources. U
 - Real-time results
 - Automatic pagination with "Show More"
 
-### 👤 Authentication System
+### 👤 Authentication System (In development)
 
-- **Registration**: Create a new account with name, email, and password
-- **Login**: Access with email and password
-- **Success Message**: Visual confirmation after successful registration
-- **Logout**: Secure session termination
+- **Under construction**: The registration and login system is still under development and not currently available.
+- Soon you will be able to create an account, log in, and save your favorite articles.
 
 ### 💾 Saved Articles
 
