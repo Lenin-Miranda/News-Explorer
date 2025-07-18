@@ -8,7 +8,7 @@ export default function Footer() {
         <FaCopyright className="footer__copyright-icon" />
         2025 NewsExplore powered by News API
       </p>
-      <div className="footer__links">
+      <nav className="footer__links">
         <div className="footer__links-container">
           <Link to={"/"} style={{ fontWeight: "400" }} className="footer__link">
             Home
@@ -44,7 +44,7 @@ export default function Footer() {
             <FaLinkedin className="footer__icon" />
           </Link>
         </div>
-      </div>
+      </nav>
     </footer>
   );
 }

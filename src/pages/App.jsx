@@ -244,12 +244,12 @@ function App() {
                 <PageTransition>
                   <>
                     <div className="news__header">
-                      <p className="news__paragraph">Saved articles</p>
-                      <h2 className="news__saved-articles">
+                      <p className="news__header-paragraph">Saved articles</p>
+                      <h1 className="news__header-saved-articles">
                         {currentUser?.name}, you have {savedArticles.length}{" "}
                         saved articles
-                      </h2>
-                      <p className="news__keywords">
+                      </h1>
+                      <p className="news__header-keywords">
                         By keywords:{" "}
                         <span style={{ fontWeight: "700" }}>
                           {savedKeywords.length === 0 && ""}

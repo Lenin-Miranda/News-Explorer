@@ -18,9 +18,10 @@
   padding: 36px 28px;
   max-width: 430px;
   max-height: 90vh;
-  overflow-y: auto;
+
   box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1),
     0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  position: relative;
 }
 
 .modal__form-title {
@@ -65,6 +66,7 @@
 
 .modal__form-input:focus {
   outline: none;
+  border-bottom: 1px solid #000;
 }
 
 .modal__form-label {
@@ -88,9 +90,9 @@
 .modal__form-close {
   border: none;
   background: none;
-  position: relative;
-  top: -240px;
-  right: -480px;
+  position: absolute;
+  top: -40px;
+  right: -40px;
 }
 
 @media (max-width: 620px) {

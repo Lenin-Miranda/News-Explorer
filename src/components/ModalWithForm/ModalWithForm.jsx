@@ -21,15 +21,14 @@ export default function ModalWithForm({
 
   return (
     <div className="modal__container" onClick={handleOverlayClick}>
-      <button className="modal__form-close">
-        <img src={close} onClick={onClose} alt="Cerrar modal" />
-      </button>
       <div className="modal__form">
+        <button className="modal__form-close">
+          <img src={close} onClick={onClose} alt="Cerrar modal" />
+        </button>
         <h2 className="modal__form-title">
           {success ? "Registration successfully completed!" : title}
         </h2>
         {children}
-
         <button
           className="modal__form-btn"
           type="button"

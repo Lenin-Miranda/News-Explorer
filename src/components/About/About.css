@@ -18,8 +18,8 @@
   margin: 0;
 }
 .about__image {
+  max-width: 400px;
   width: 100%;
-  max-width: 464px;
   aspect-ratio: 1/1;
   border-radius: 50%;
   object-fit: cover;
@@ -31,6 +31,7 @@
   font-family: "roboto", sans-serif, "Times New Roman", Times, serif;
   font-size: 18px;
   font-weight: 400;
+  min-width: 300px;
 }
 
 @media (max-width: 620px) {
@@ -44,5 +45,14 @@
   .about__image {
     max-width: 272px;
     max-height: 272px;
+  }
+}
+
+@media (max-width: 720px) {
+  .about__image {
+    max-width: 232px;
+  }
+  .about__description {
+    width: 424px;
   }
 }

@@ -51,7 +51,11 @@ export default function NewsCard({
     <section className="news">
       {isHome && (
         <div className="news__text-container">
-          <span className="news__text">Search Results</span>
+          {items.length === 0 ? (
+            ""
+          ) : (
+            <span className="news__text">Search Results</span>
+          )}
         </div>
       )}
       {isLoading ? (
@@ -116,7 +120,7 @@ export default function NewsCard({
                   <p className="news__card-date">
                     {formatDate(item.publishedAt)}
                   </p>
-                  <p className="news__card-header">{item.title}</p>
+                  <h2 className="news__card-header">{item.title}</h2>
                   <p className="news__card-description">{item.description}</p>
                   <p className="news__card-company">
                     {item.source?.name.toUpperCase()}
