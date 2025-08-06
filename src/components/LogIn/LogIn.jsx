@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { authorize } from "../../utils/auth";
+import { login } from "../../utils/auth";
 import "./LogIn.css";
+
 export default function LogIn({ onSuccess, onError, isLoading, setIsLoading }) {
   const [formData, setFormData] = useState({
     email: "",
@@ -23,7 +24,7 @@ export default function LogIn({ onSuccess, onError, isLoading, setIsLoading }) {
     setError("");
 
     try {
-      const response = await authorize(formData.email, formData.password);
+      const response = await login(formData.email, formData.password);
 
       // Guardar token en localStorage
       localStorage.setItem("token", response.token);

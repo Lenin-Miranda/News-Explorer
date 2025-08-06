@@ -21,6 +21,7 @@ export default function NewsCard({
   isLoggedIn,
   onSavedArticle,
   onDeleteArticle,
+  keyword,
 }) {
   const [show, setShow] = useState(false);
   const [hoveredId, setHoveredId] = useState(null);
@@ -84,8 +85,8 @@ export default function NewsCard({
                     }`}
                     onClick={() =>
                       isHome
-                        ? isLoggedIn && onToggle(item.url)
-                        : onToggle(item.url)
+                        ? isLoggedIn && onToggle(item.url, item._id)
+                        : onDeleteArticle(item._id)
                     }
                     disabled={isHome && !isLoggedIn}
                     type="button"

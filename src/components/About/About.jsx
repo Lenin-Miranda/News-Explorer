@@ -12,13 +12,13 @@ export default function About() {
           by mastering HTML, CSS, and JavaScript, and quickly expanded into
           modern frameworks like React and tools like Figma to design intuitive
           user interfaces.
-          <p className="about__description">
-            {" "}
-            I enjoy building full-stack projects from scratch, connecting
-            front-end and back-end seamlessly using REST APIs and modular
-            JavaScript. I'm currently deepening my skills in Node.js and MongoDB
-            to take my apps to the next level.
-          </p>
+        </p>
+        <p className="about__description">
+          {" "}
+          I enjoy building full-stack projects from scratch, connecting
+          front-end and back-end seamlessly using REST APIs and modular
+          JavaScript. I'm currently deepening my skills in Node.js and MongoDB
+          to take my apps to the next level.
         </p>
         <p className="about__description">
           I believe in learning by doing. Most of what I’ve built so far — from

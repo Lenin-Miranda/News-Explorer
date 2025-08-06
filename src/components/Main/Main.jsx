@@ -44,10 +44,10 @@ export default function Main({
       const data = await fetchNews(search);
       const articlesWithKeyword = (data.articles || []).map((article) => ({
         ...article,
-        keyword: search,
+        keyword: search.trim(), // guardar el keyword actual
       }));
       setResult(articlesWithKeyword);
-      if (addArticles) addArticles(articlesWithKeyword);
+      if (addArticles) addArticles(articlesWithKeyword); // guardas con keyword ya incluido
     } catch (error) {
       setResult([]);
     }
@@ -66,7 +66,7 @@ export default function Main({
         const data = await fetchNews(search);
         const articlesWithKeyword = (data.articles || []).map((article) => ({
           ...article,
-          keyword: search,
+          keyword: search.trim(),
         }));
         setResult(articlesWithKeyword);
         if (addArticles) addArticles(articlesWithKeyword);

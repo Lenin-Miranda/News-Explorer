@@ -45,55 +45,86 @@ function App() {
   // check the token when the app is load
   useEffect(() => {
     const token = localStorage.getItem("token");
-    const user = localStorage.getItem("user");
 
-    if (token && user) {
-      checkToken(token)
-        .then((response) => {
-          setIsLoading(true);
-          setCurrentUser(JSON.parse(user));
-        })
-        .catch(() => {
-          localStorage.removeItem("toke");
-          localStorage.removeItem("user");
-          setIsLoggedIn(false);
-          setCurrentUser(null);
-        });
-    }
+    if (!token) return;
+
+    setIsLoading(true);
+    checkToken(token)
+      .then((response) => {
+        setCurrentUser({
+          _id: response._id,
+          name: response.name,
+          email: response.email,
+        }); // usar el usuario que devuelve la API
+        setIsLoggedIn(true);
+      })
+      .catch(() => {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        setIsLoggedIn(false);
+        setCurrentUser(null);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, []);
 
   useEffect(() => {
-    if (isLoggedIn && currentUser?._id) {
-      getSavedArticles(currentUser._id)
-        .then(setSavedArticles)
-        .catch(() => setSavedArticles([]));
+    if (isLoggedIn) {
+      const token = localStorage.getItem("token");
+      if (!token) return;
+      getSavedArticles(token)
+        .then((articles) => {
+          setSavedArticles(articles);
+          setToggledIds(articles.map((a) => a.url));
+        })
+        .catch(() => {
+          setSavedArticles([]);
+          setToggledIds([]);
+        });
     } else {
       setSavedArticles([]);
+      setToggledIds([]);
     }
-  }, [isLoggedIn, currentUser]);
+  }, [isLoggedIn, search]);
 
   //saved article
   const handleSaveArticle = async (article) => {
-    if (!currentUser?._id) return;
     try {
-      const saved = await saveArticle(article, currentUser._id);
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const mappedArticle = {
+        source: {
+          id: article.source?.id || null,
+          name: article.source?.name || "",
+        },
+        author: article.author || "",
+        title: article.title,
+        description: article.description,
+        url: article.url,
+        urlToImage: article.urlToImage,
+        publishedAt: article.publishedAt,
+        content: article.content || "",
+        keyword: article.keyword || search || "",
+      };
+
+      const saved = await saveArticle(token, mappedArticle);
       setSavedArticles((prev) => [...prev, saved]);
     } catch (err) {
       console.log(err.message);
     }
   };
 
-  //Delete article
   const handleDeleteArticle = async (articleId) => {
-    if (!currentUser?._id) return;
     try {
-      await deleteArticle(articleId, currentUser._id);
+      const token = localStorage.getItem("token");
+      await deleteArticle(token, articleId);
       setSavedArticles((prev) => prev.filter((a) => a._id !== articleId));
     } catch (err) {
       console.log(err.message);
     }
   };
-
   // Función para agregar artículos nuevos a allArticles sin duplicados
   const addArticles = (articles) => {
     setAllArticles((prev) => {
@@ -118,7 +149,7 @@ function App() {
 
   const handleLogout = async () => {
     try {
-      await logout();
+      logout();
     } catch (error) {
       console.error("Logout error:", error);
     } finally {
@@ -143,20 +174,23 @@ function App() {
     });
   };
 
-  const handleToggle = (url) => {
+  const handleToggle = (url, id) => {
     if (!isLoggedIn) return;
-    // Buscar el artículo en la lista de noticias o en allArticles
-    const article =
-      allArticles.find((a) => a.url === url) || news.find((a) => a.url === url);
-    if (!article) return;
 
     if (toggledIds.includes(url)) {
-      // Eliminar de favoritos usando la API simulada
-      const saved = savedArticles.find((a) => a.url === url);
-      if (saved) handleDeleteArticle(saved._id);
+      if (id) {
+        handleDeleteArticle(id);
+      } else {
+        // buscar el id en savedArticles por url
+        const saved = savedArticles.find((a) => a.url === url);
+        if (saved?._id) handleDeleteArticle(saved._id);
+      }
       setToggledIds((prev) => prev.filter((itemId) => itemId !== url));
     } else {
-      // Guardar en favoritos usando la API simulada
+      const article =
+        allArticles.find((a) => a.url === url) ||
+        news.find((a) => a.url === url);
+      if (!article) return;
       handleSaveArticle(article);
       setToggledIds((prev) => [...prev, url]);
     }
@@ -167,8 +201,15 @@ function App() {
   };
 
   const handleAuthSucces = (response) => {
+    localStorage.setItem("token", response.token);
     setIsLoggedIn(true);
-    setCurrentUser(response.user);
+    checkToken(response.token).then((user) => {
+      setCurrentUser({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+      });
+    });
     setIsModalOpen(false);
     setModalMode("login");
   };
@@ -178,13 +219,9 @@ function App() {
   };
 
   // Cambia el filtro para usar allArticles
-  const savedArticlesList = allArticles.filter((item) =>
-    toggledIds.includes(item.url)
-  );
+
   const savedKeywords = [
-    ...new Set(
-      savedArticlesList.map((article) => article.keyword).filter(Boolean)
-    ),
+    ...new Set(savedArticles.map((article) => article.keyword).filter(Boolean)),
   ];
 
   //
@@ -274,6 +311,7 @@ function App() {
                       isLoggedIn={isLoggedIn}
                       onDeleteArticle={handleDeleteArticle}
                       savedArticles={saveArticle}
+                      keyword={savedKeywords}
                     />
 
                     {isMenuOpen && (
