@@ -1,0 +1,16 @@
+.modal__error {
+  text-align: center;
+}
+
+.modal__error-text {
+  font-family: "inter", "Times New Roman", Times, serif;
+  color: #ff0000;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.modal__form-button:disabled {
+  background-color: #e6e8eb !important;
+  color: #a0a0a0;
+  cursor: not-allowed;
+}

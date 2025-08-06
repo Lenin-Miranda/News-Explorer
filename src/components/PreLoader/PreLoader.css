@@ -1,0 +1,58 @@
+.circle {
+  height: 100%;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  padding: 260px;
+  gap: 80px;
+  height: 200px;
+}
+
+.circle-preloader {
+  display: block;
+  width: 74px;
+  height: 74px;
+  border: 2px solid #444;
+  border-bottom-color: #888;
+  border-radius: 50%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  animation: spin 0.75s infinite linear;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+.circle-text {
+  color: #b6bcbf;
+  font-size: 18px;
+  margin: 60px 0 0;
+  font-weight: 400;
+  text-align: center;
+}
+
+@media (max-width: 620px) {
+  .circle {
+    padding: 80px 16px;
+    gap: 40px;
+    height: 150px;
+  }
+
+  .circle-preloader {
+    width: 50px;
+    height: 50px;
+    border-width: 1px;
+  }
+
+  .circle-text {
+    font-size: 16px;
+    margin: 30px 0 0;
+    text-align: center;
+  }
+}
