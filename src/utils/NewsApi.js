@@ -6,10 +6,10 @@ const API_URL =
 
 export const fetchNews = async (query) => {
   try {
-    const res = await fetch(`${API_URL}news?q=${encodeURIComponent(query)}`);
+    const res = await fetch(`${API_URL}/news?q=${encodeURIComponent(query)}`);
     return await checkResponse(res);
   } catch (err) {
     console.error("Error al obtener noticias:", err);
     throw err;
   }
-}
+};
